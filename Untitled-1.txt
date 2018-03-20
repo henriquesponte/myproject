@@ -1,0 +1,91 @@
+<template>
+  <div class="weel">
+    <h1 class="title">Lista de Tarefas</h1>
+    <div class="collumns">
+      <div class="column">
+        <input v-model="novaTarefa" type="text">
+      </div>
+      <button @click.prevent="adicionar" class="button is-primary is-small">Adicionar</button>
+      <button @click="mostrarTodos" class="button is-link is-small">Mostrar Todos</button>
+      <button @click.prevent="mostrarNaoFeitas" class="button is-small">Mostrar não concluídos</button>
+      <button @click.prevent="completos" class="button is-success is-small">Mostrar Concluídos</button>
+      <button @click.prevent="apagarFeitas" class="button is-danger is-small">Apagar Feitos</button>
+    </div>
+    <br>
+    <div v-for="(item, index) in tarefas" v-if="item.visivel">
+    <input @click="item.completo=!item.completo" type="checkbox"> {{item.nome}} <button @click="remover(index)">Remover</button>
+    </div>
+  </div>
+</template>
+
+<script>
+import "bulma/css/bulma.css"
+export default {
+  name: "HelloWorld",
+  data() {
+    return {
+      novaTarefa: "",
+      tarefas:[
+      ],
+    };
+  },
+  methods: {
+    adicionar(){
+    this.tarefas.unshift({
+      nome: this.novaTarefa,
+      completo: false,
+      visivel: true,
+    });
+    },
+    remover(i){
+      this.tarefas.splice(i, 1);
+    },
+    completa(){
+      this.tarefas.completo=true;
+    },
+    mostrarTodos(){
+      for (var i=0;i<this.tarefas.length;i++){
+        this.tarefas[i].visivel=true;
+        if (this.tarefas[i].completo==true){
+          this.tarefas[i].completo=false
+        }
+        };
+      },
+    apagarFeitas(){
+      for (var i=0;i<this.tarefas.length;i++){
+        if (this.tarefas[i].completo){
+          this.tarefas[i].nome=null;
+          this.tarefas[i].visivel=null;
+          this.tarefas[i].completo=null;
+        }
+      }
+    },
+    mostrarNaoFeitas(){
+      for (var i=0;i<this.tarefas.length;i++){
+        if (this.tarefas[i].completo==false){
+          this.tarefas[i].visivel=true
+        }else{this.tarefas[i].visivel=false
+        }
+      }
+    },
+     completos(){
+      for (var i=0;i<this.tarefas.length;i++){
+        if (this.tarefas[i].completo==true){
+          this.tarefas[i].visivel=true;
+        }else{
+          this.tarefas[i].visivel=false;
+        }
+      }
+    },
+  }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h1{
+
+}
+
+
+</style>
